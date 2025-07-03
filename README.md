@@ -1,47 +1,66 @@
 # 🧼 Data Cleaning Summary
 
-This section documents the key decisions and status of the data cleaning process for our dataset composed of two primary CSV files: `True.csv` and `Fake.csv`.
+This repository documents the key steps and decisions made in cleaning the dataset composed of two primary CSV files: `True.csv` and `Fake.csv`.
 
 ---
 
 ## 📊 Dataset Overview
 
-| File Name  | Original Rows | Notes                          |
-|------------|----------------|-------------------------------|
-| True.csv   | ~21,211        | Mostly clean; fewer missing values |
-| Fake.csv   | ~23,502        | Contains more missing and corrupted data |
+| File Name  | Original Rows | Notes                                  |
+|------------|----------------|----------------------------------------|
+| `True.csv` | ~21,211        | Generally clean with minimal missing values |
+| `Fake.csv` | ~23,502        | Contains more missing and malformed data     |
 
 ---
 
 ## 🧹 Cleaning Strategy
 
+### 🔄 Unified Cleaning Rules
+
+Both datasets are cleaned using the **same criteria** for consistency:
+
+- Rows are removed if **any** of the following fields are missing:
+  - `title`
+  - `text`
+  - `subject`
+  - `date`
+
+> These four fields are essential for analysis. Missing data in any of them may skew results or reduce interpretability.
+
+---
+
 ### ✅ `True.csv`
-- **Cleaning Rule:** Remove rows **only where the `content` field is missing**.
-- **Result:** Less aggressive cleaning, retains rows even if `title`, `subject`, or `date` are missing.
-- **Outcome:** A high number of rows preserved for sampling and analysis.
+
+- **Cleaning Rule:** Drop rows with missing `title`, `text`, `subject`, or `date`
+- **Observation:** Fewer rows dropped due to overall higher data quality
+- **Outcome:** Majority of data retained for analysis
+
+---
 
 ### ❌ `Fake.csv`
-- **Cleaning Rule:** Remove rows **where any column is missing** (`title`, `text`, `subject`, or `date`).
-- **Result:** More aggressive cleaning, more rows removed due to frequent missing data.
-- **Outcome:** Lower number of usable rows remaining after cleaning.
+
+- **Cleaning Rule:** Drop rows with missing `title`, `text`, `subject`, or `date`
+- **Observation:** More rows dropped due to frequent missing or corrupted values
+- **Outcome:** Smaller but cleaner dataset ready for comparison
 
 ---
 
 ## 🔍 Post-Cleaning Sampling
 
-To create a manageable and balanced dataset for dashboarding and analysis, **30% stratified sampling** was applied to both cleaned datasets.
+To reduce processing time and support balanced analysis, a **30% stratified sampling** was applied to both cleaned datasets.
 
-### Example:
-- `True.csv`: 20,000 cleaned rows → 30% sample → ~6,000 rows
-- `Fake.csv`: 7,000 cleaned rows → 30% sample → ~2,100 rows
+| Dataset     | Approx. Cleaned Rows | 30% Sample Size |
+|-------------|-----------------------|------------------|
+| `True.csv`  | ~20,000               | ~6,000 rows      |
+| `Fake.csv`  | ~7,000                | ~2,100 rows      |
 
 ---
 
-## 🔧 Mojibake Fix: Character Encoding Cleanup
+## 🔧 Mojibake Fix (Character Encoding Cleanup)
 
-Some rows from `Fake.csv` (and a few from `True.csv`) included **corrupted characters (mojibake)** due to encoding errors from the original source.
+Some entries, mostly from `Fake.csv`, contained **mojibake** (corrupted characters) due to encoding issues. These were fixed using formulas in **Excel or Google Sheets**.
 
-These were resolved using a formula-based approach in **Excel/Google Sheets**, such as the one below:
+### Example Formula:
 
 ```excel
 =SUBSTITUTE(
