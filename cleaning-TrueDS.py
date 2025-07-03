@@ -14,11 +14,11 @@ df_clean = df.loc[:, ~df.columns.str.contains('^Unnamed')]
 print(f"Shape after removing unnamed columns: {df_clean.shape}")
 print(f"Cleaned columns: {df_clean.columns.tolist()}")
 
-# Remove rows with missing values in CONTENT column
-df_clean = df_clean.dropna(subset=['CONTENT'])
+# Remove rows with missing values in any column
+df_clean = df_clean.dropna()
 
-print(f"Shape after removing missing CONTENT: {df_clean.shape}")
-print(f"Removed {len(df) - len(df_clean)} rows with missing CONTENT")
+print(f"Shape after removing rows with any missing values: {df_clean.shape}")
+print(f"Removed {len(df) - len(df_clean)} rows with missing values in any column")
 
 # Show the value counts for SUBJECT
 print("\nSUBJECT value counts:")
@@ -44,7 +44,7 @@ sampled_df = (
 print(f"Sampled rows: {len(sampled_df)}")
 
 # Save with proper quoting to handle commas in text
-sampled_df.to_csv('True_sampled.csv', index=False, quoting=1)
+sampled_df.to_csv('True_SampledData.csv', index=False, quoting=1)
 
 # Optional: Check for any remaining missing values
 print(f"\nMissing values in final sample:")
