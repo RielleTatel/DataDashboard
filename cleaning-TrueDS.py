@@ -28,7 +28,7 @@ print(f"\nTotal rows (after cleaning): {len(df_clean)}")
 print(f"Number of categories: {df_clean['SUBJECT'].nunique()}")
 
 # Save the cleaned dataset with proper quoting to handle commas in text
-df_clean.to_csv('True_UnsampledData.xlsx', index=False, quoting=1)
+df_clean.to_csv('True_UnsampledData.csv', index=False, quoting=1)
 
 # Optional: Check for any remaining missing values
 print(f"\nMissing values in final cleaned dataset:")
