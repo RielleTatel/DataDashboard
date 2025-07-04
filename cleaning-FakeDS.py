@@ -24,28 +24,12 @@ print(f"Removed {len(df) - len(df_clean)} rows with missing values in any column
 print("\nSUBJECT value counts:")
 print(df_clean['SUBJECT'].value_counts())
 
-# Calculate sample size (30% of total)
-sample_size = int(0.3 * len(df_clean))
-n_categories = df_clean['SUBJECT'].nunique()
-
-# Calculate samples per category, but ensure it's at least 1
-samples_per_category = max(1, sample_size // n_categories)
-
 print(f"\nTotal rows (after cleaning): {len(df_clean)}")
-print(f"Number of categories: {n_categories}")
-print(f"Samples per category: {samples_per_category}")
+print(f"Number of categories: {df_clean['SUBJECT'].nunique()}")
 
-# Stratified sample with error handling
-sampled_df = (
-    df_clean.groupby('SUBJECT', group_keys=False)
-      .apply(lambda x: x.sample(n=min(samples_per_category, len(x)), random_state=42))
-)
-
-print(f"Sampled rows: {len(sampled_df)}")
-
-# Save with proper quoting to handle commas in text
-sampled_df.to_csv('Fake_sampled2.csv', index=False, quoting=1)
+# Save the cleaned dataset with proper quoting to handle commas in text
+df_clean.to_csv('Fake_UnSampledData.xlsx', index=False, quoting=1)
 
 # Optional: Check for any remaining missing values
-print(f"\nMissing values in final sample:")
-print(sampled_df.isnull().sum())
+print(f"\nMissing values in final cleaned dataset:")
+print(df_clean.isnull().sum())
