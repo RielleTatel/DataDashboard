@@ -14,11 +14,45 @@ df_clean = df.loc[:, ~df.columns.str.contains('^Unnamed')]
 print(f"Shape after removing unnamed columns: {df_clean.shape}")
 print(f"Cleaned columns: {df_clean.columns.tolist()}")
 
-# Remove rows with missing values in any column
-df_clean = df_clean.dropna()
+# Enhanced cleaning: Remove rows with missing values, empty strings, and whitespace-only strings
+print(f"\nEnhanced cleaning analysis:")
+print(f"Original rows: {len(df_clean):,}")
 
-print(f"Shape after removing rows with any missing values: {df_clean.shape}")
-print(f"Removed {len(df) - len(df_clean)} rows with missing values in any column")
+# Check for different types of missing data
+missing_nan = df_clean.isnull().sum().sum()
+print(f"Missing values (NaN): {missing_nan:,}")
+
+# Check for empty strings
+empty_strings = 0
+for col in df_clean.columns:
+    if df_clean[col].dtype == 'object':
+        empty_strings += (df_clean[col] == '').sum()
+print(f"Empty strings: {empty_strings:,}")
+
+# Check for whitespace-only strings
+whitespace_only = 0
+for col in df_clean.columns:
+    if df_clean[col].dtype == 'object':
+        whitespace_only += (df_clean[col].str.strip() == '').sum()
+print(f"Whitespace-only strings: {whitespace_only:,}")
+
+# Remove rows with NaN values
+df_clean = df_clean.dropna()
+print(f"After removing NaN: {len(df_clean):,} rows")
+
+# Remove rows with empty strings
+for col in df_clean.columns:
+    if df_clean[col].dtype == 'object':
+        df_clean = df_clean[df_clean[col] != '']
+print(f"After removing empty strings: {len(df_clean):,} rows")
+
+# Remove rows with whitespace-only strings
+for col in df_clean.columns:
+    if df_clean[col].dtype == 'object':
+        df_clean = df_clean[df_clean[col].str.strip() != '']
+print(f"After removing whitespace-only: {len(df_clean):,} rows")
+
+print(f"Total rows removed: {len(df) - len(df_clean):,}")
 
 # Show the value counts for SUBJECT
 print("\nSUBJECT value counts:")
@@ -27,8 +61,8 @@ print(df_clean['SUBJECT'].value_counts())
 print(f"\nTotal rows (after cleaning): {len(df_clean)}")
 print(f"Number of categories: {df_clean['SUBJECT'].nunique()}")
 
-# Save the cleaned dataset with proper quoting to handle commas in text
-df_clean.to_csv('Fake_UnSampledData.csv', index=False, quoting=1)
+# Save the cleaned dataset as Excel
+df_clean.to_excel('Fake_UnSampledData1.xlsx', index=False)
 
 # Optional: Check for any remaining missing values
 print(f"\nMissing values in final cleaned dataset:")
