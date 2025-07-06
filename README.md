@@ -25,6 +25,61 @@ Some entries contained **mojibake** (corrupted characters) due to encoding issue
 
 ---
 
+### ✅ `True.csv`
+
+- **Cleaning Rule:** Drop rows with missing `title`, `text`, `subject`, or `date`
+- **Observation:** Fewer rows dropped due to overall higher data quality
+- **Outcome:** Majority of data retained for analysis
+
+---
+
+### ❌ `Fake.csv`
+
+- **Cleaning Rule:** Drop rows with missing `title`, `text`, `subject`, or `date`
+- **Observation:** More rows dropped due to frequent missing or corrupted values
+- **Outcome:** Smaller but cleaner dataset ready for comparison
+
+---
+
+## 🔍 Post-Cleaning Sampling
+
+---
+
+## 🔧 Mojibake Fix (Character Encoding Cleanup)
+
+Some entries, mostly from `Fake.csv`, contained **mojibake** (corrupted characters) due to encoding issues. These were fixed using formulas in **Excel or Google Sheets**.
+
+### Example Formula:
+
+```excel
+=SUBSTITUTE(
+  SUBSTITUTE(
+    SUBSTITUTE(
+      SUBSTITUTE(
+        SUBSTITUTE(
+          SUBSTITUTE(
+            SUBSTITUTE(
+              SUBSTITUTE(
+                SUBSTITUTE(
+                  SUBSTITUTE(
+                    SUBSTITUTE(
+                      SUBSTITUTE(
+                        A2,
+                        "√¢¬Ä¬ú", "“"),
+                      "√¢¬Ä¬ù", "”"),
+                    "√¢¬Ä¬ôs", "’s"),
+                  "√¢¬Ä¬ï", "’"),
+                "√¢¬Ä¬î", "‘"),
+              "√¢¬Ä¬ït", "’t"),
+            "√¢¬Ä¬í", "“"),
+          "√¢¬Ä¬ì", "”"),
+        "√¢¬Ä¬¶", "…"),
+      "√¢¬Ä¬ä", "—"),
+    "√¢¬Ä¬", ""),
+  "√¢", "")
+
+--- 
+
 ## 🔍 Topic Analysis (`topicScript_simple.py`)
 
 ### Process Overview
@@ -174,57 +229,3 @@ Both datasets are cleaned using the **same criteria** for consistency:
 
 > These four fields are essential for analysis. Missing data in any of them may skew results or reduce interpretability.
 
----
-
-### ✅ `True.csv`
-
-- **Cleaning Rule:** Drop rows with missing `title`, `text`, `subject`, or `date`
-- **Observation:** Fewer rows dropped due to overall higher data quality
-- **Outcome:** Majority of data retained for analysis
-
----
-
-### ❌ `Fake.csv`
-
-- **Cleaning Rule:** Drop rows with missing `title`, `text`, `subject`, or `date`
-- **Observation:** More rows dropped due to frequent missing or corrupted values
-- **Outcome:** Smaller but cleaner dataset ready for comparison
-
----
-
-## 🔍 Post-Cleaning Sampling
-
----
-
-## 🔧 Mojibake Fix (Character Encoding Cleanup)
-
-Some entries, mostly from `Fake.csv`, contained **mojibake** (corrupted characters) due to encoding issues. These were fixed using formulas in **Excel or Google Sheets**.
-
-### Example Formula:
-
-```excel
-=SUBSTITUTE(
-  SUBSTITUTE(
-    SUBSTITUTE(
-      SUBSTITUTE(
-        SUBSTITUTE(
-          SUBSTITUTE(
-            SUBSTITUTE(
-              SUBSTITUTE(
-                SUBSTITUTE(
-                  SUBSTITUTE(
-                    SUBSTITUTE(
-                      SUBSTITUTE(
-                        A2,
-                        "√¢¬Ä¬ú", "“"),
-                      "√¢¬Ä¬ù", "”"),
-                    "√¢¬Ä¬ôs", "’s"),
-                  "√¢¬Ä¬ï", "’"),
-                "√¢¬Ä¬î", "‘"),
-              "√¢¬Ä¬ït", "’t"),
-            "√¢¬Ä¬í", "“"),
-          "√¢¬Ä¬ì", "”"),
-        "√¢¬Ä¬¶", "…"),
-      "√¢¬Ä¬ä", "—"),
-    "√¢¬Ä¬", ""),
-  "√¢", "")
