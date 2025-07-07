@@ -4,6 +4,59 @@ This repository contains a comprehensive analysis pipeline for misinformation de
 
 ---
 
+## 📦 Dependencies and Installation
+
+### Core Dependencies
+Both scripts require the following core Python packages:
+
+```bash
+pip3 install pandas numpy matplotlib seaborn scikit-learn nltk
+```
+
+### Topic Analysis Dependencies (`topicScript_simple.py`)
+```bash
+pip3 install wordcloud
+```
+
+### Sentiment Analysis Dependencies (`sentimentScript.py`)
+```bash
+pip3 install vaderSentiment textblob wordcloud
+```
+
+### Complete Installation
+To install all dependencies for both scripts at once:
+
+```bash
+pip3 install pandas numpy matplotlib seaborn scikit-learn nltk wordcloud vaderSentiment textblob
+```
+
+### System Requirements
+- **Python**: 3.8 or higher
+- **Memory**: Minimum 4GB RAM (8GB recommended for large datasets)
+- **Storage**: Sufficient space for output files and visualizations
+
+### NLTK Data Downloads
+The scripts automatically download required NLTK data packages:
+- `punkt` - For text tokenization
+- `stopwords` - For stop word removal
+- `wordnet` - For lemmatization
+
+### Troubleshooting
+- **SSL Certificate Issues**: The scripts handle macOS SSL certificate problems automatically
+- **Encoding Issues**: Multiple encoding formats (UTF-8, Latin-1, CP1252) are supported
+- **Memory Issues**: For very large datasets, consider using the sampling approach or processing in batches
+
+---
+
+## 📊 Dataset Overview
+
+| File Name  | Original Rows | Notes                                  |
+|------------|----------------|----------------------------------------|
+| `True.csv` | ~21,211        | Generally clean with minimal missing values |
+| `Fake.csv` | ~23,502        | Contains more missing and malformed data     |
+
+---
+
 ## 🧹 Data Cleaning Process
 
 ### Overview
@@ -20,37 +73,22 @@ Both datasets are cleaned using **unified criteria** for consistency and reliabi
 
 - **Quality Assurance**: These four fields are essential for meaningful analysis. Missing data in any of them could skew results or reduce interpretability.
 
-### Character Encoding Cleanup
-Some entries contained **mojibake** (corrupted characters) due to encoding issues. These were fixed using Excel formulas to restore proper text formatting.
+### Dataset-Specific Results
 
----
-
-### ✅ `True.csv`
-
+#### ✅ `True.csv`
 - **Cleaning Rule:** Drop rows with missing `title`, `text`, `subject`, or `date`
 - **Observation:** Fewer rows dropped due to overall higher data quality
 - **Outcome:** Majority of data retained for analysis
 
----
-
-### ❌ `Fake.csv`
-
+#### ❌ `Fake.csv`
 - **Cleaning Rule:** Drop rows with missing `title`, `text`, `subject`, or `date`
 - **Observation:** More rows dropped due to frequent missing or corrupted values
 - **Outcome:** Smaller but cleaner dataset ready for comparison
 
----
-
-## 🔍 Post-Cleaning Sampling
-
----
-
-## 🔧 Mojibake Fix (Character Encoding Cleanup)
-
+### Character Encoding Cleanup (Mojibake Fix)
 Some entries, mostly from `Fake.csv`, contained **mojibake** (corrupted characters) due to encoding issues. These were fixed using formulas in **Excel or Google Sheets**.
 
-### Example Formula:
-
+#### Example Formula:
 ```excel
 =SUBSTITUTE(
   SUBSTITUTE(
@@ -65,20 +103,21 @@ Some entries, mostly from `Fake.csv`, contained **mojibake** (corrupted characte
                     SUBSTITUTE(
                       SUBSTITUTE(
                         A2,
-                        "√¢¬Ä¬ú", "“"),
-                      "√¢¬Ä¬ù", "”"),
-                    "√¢¬Ä¬ôs", "’s"),
-                  "√¢¬Ä¬ï", "’"),
-                "√¢¬Ä¬î", "‘"),
-              "√¢¬Ä¬ït", "’t"),
-            "√¢¬Ä¬í", "“"),
-          "√¢¬Ä¬ì", "”"),
+                        "√¢¬Ä¬ú", """),
+                      "√¢¬Ä¬ù", """),
+                    "√¢¬Ä¬ôs", "'s"),
+                  "√¢¬Ä¬ï", "'"),
+                "√¢¬Ä¬î", "'"),
+              "√¢¬Ä¬ït", "'t"),
+            "√¢¬Ä¬í", """),
+          "√¢¬Ä¬ì", """),
         "√¢¬Ä¬¶", "…"),
       "√¢¬Ä¬ä", "—"),
     "√¢¬Ä¬", ""),
   "√¢", "")
+```
 
---- 
+---
 
 ## 🔍 Topic Analysis (`topicScript_simple.py`)
 
@@ -161,59 +200,6 @@ This analysis helps answer key questions such as:
 - Which emotions dominate in different topic categories?
 - How do sentiment patterns differ between true and fake news?
 - What emotional triggers are most effective in spreading misinformation?
-
----
-
-## 📦 Dependencies and Installation
-
-### Core Dependencies
-Both scripts require the following core Python packages:
-
-```bash
-pip3 install pandas numpy matplotlib seaborn scikit-learn nltk
-```
-
-### Topic Analysis Dependencies (`topicScript_simple.py`)
-```bash
-pip3 install wordcloud
-```
-
-### Sentiment Analysis Dependencies (`sentimentScript.py`)
-```bash
-pip3 install vaderSentiment textblob wordcloud
-```
-
-### Complete Installation
-To install all dependencies for both scripts at once:
-
-```bash
-pip3 install pandas numpy matplotlib seaborn scikit-learn nltk wordcloud vaderSentiment textblob
-```
-
-### System Requirements
-- **Python**: 3.8 or higher
-- **Memory**: Minimum 4GB RAM (8GB recommended for large datasets)
-- **Storage**: Sufficient space for output files and visualizations
-
-### NLTK Data Downloads
-The scripts automatically download required NLTK data packages:
-- `punkt` - For text tokenization
-- `stopwords` - For stop word removal
-- `wordnet` - For lemmatization
-
-### Troubleshooting
-- **SSL Certificate Issues**: The scripts handle macOS SSL certificate problems automatically
-- **Encoding Issues**: Multiple encoding formats (UTF-8, Latin-1, CP1252) are supported
-- **Memory Issues**: For very large datasets, consider using the sampling approach or processing in batches
-
----
-
-## 📊 Dataset Overview
-
-| File Name  | Original Rows | Notes                                  |
-|------------|----------------|----------------------------------------|
-| `True.csv` | ~21,211        | Generally clean with minimal missing values |
-| `Fake.csv` | ~23,502        | Contains more missing and malformed data     |
 
 ---
 
